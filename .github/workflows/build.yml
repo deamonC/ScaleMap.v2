@@ -1,0 +1,24 @@
+name: Build
+
+on:
+  [workflow_dispatch, push]
+
+jobs:
+  build-windows:
+    name: Build Windows
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Build VST3 plugin
+      run: dotnet build -c Release ScaleMap\ScaleMap.csproj
+
+    - name: Upload plugin
+      uses: actions/upload-artifact@v4
+      with:
+        name: ScaleMapVST3Plugin
+        path: ScaleMap\bin\Release\net10.0-windows
